@@ -51,7 +51,7 @@ public class pageEventService {
           return input.filter((k,v)->v.getDuration()>100)
                   .map((k,v)->new KeyValue<>(v.getName(),0L))
                   .groupBy((k,v)->k, Grouped.with(Serdes.String(),Serdes.Long()))
-                  .windowedBy(TimeWindows.of(Duration.ofDays(5000)))
+                  .windowedBy(TimeWindows.of(Duration.ofSeconds(5000)))
                   .count(Materialized.as("page-count"))
                   .toStream()
                   .map((k,v)-> new KeyValue<>("=>"+k.window().startTime()+k.window().endTime()+k.key(),v));
